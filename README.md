@@ -175,8 +175,6 @@ python main.py \
 |----------|------|---------|-------------|
 | `--model` | str | `PISynergy` | Model selection: `PISynergy` (FEGA), `DeepSynergy`, `DeepDDSGCNNet` |
 | `--dataset_name` | str | `indep2-OncologyScreen` | Dataset: `indep0-oneil`, `indep1-almanac`, `indep2-OncologyScreen`, `indep3-DrugCombDB` |
-| `--celldataset` | int | `2` | Gene set selection: 1=18498g, 2=4079g, 3=963g |
-| `--omic` | str | `exp,mut,cn,eff,dep,met` | Omics data types to include |
 | `--batch_size` | int | `128` | Batch size |
 | `--lr` | float | `0.0001` | Learning rate |
 | `--epochs` | int | `300` | Maximum training epochs |
