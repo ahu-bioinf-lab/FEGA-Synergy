@@ -12,7 +12,7 @@ import torch
 import tqdm
 from model.FEGA import FEGA_Synergy
 from model.DeepSynergy import DeepSynergy
-from utils6异构copy import (EarlyStopping,  load_data,
+from utils import (EarlyStopping,  load_data,
                         set_random_seed, train, validate, get_TensorDataset, get_DataList)
 import json
 from model.DeepDDS import DeepDDSGCNNet
