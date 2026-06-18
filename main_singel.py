@@ -11,7 +11,7 @@ import torch
 import tqdm
 from model.FEGA import *
 from model.DeepSynergy import DeepSynergy
-from utils6异构copy import (EarlyStopping,  load_data,
+from utils import (EarlyStopping,  load_data,
                         set_random_seed, train, validate, get_TensorDataset, get_DataList)
 from mol_to_linegraph import *
 import json
