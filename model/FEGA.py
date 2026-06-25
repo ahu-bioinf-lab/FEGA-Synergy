@@ -27,7 +27,7 @@ class FEGA_Synergy(torch.nn.Module):
         node_num_dict = {'drug': len(drug2id), 'protein': 810}  # 1027
         feat_dim_dict = {'drug': 64, 'protein': 256}
 
-        self.SEGAHGT = SEGAHGTEncoder(
+        self.FEGA = FEGAEncoder(
             dim_drug=300,
             dim_prot=256,
             dim_pathway=768,
@@ -109,7 +109,7 @@ class FEGA_Synergy(torch.nn.Module):
         drugB_repr = torch.stack(drugB_repr)
 
         # ---- 4. 送进层级 SEGA ----
-        drug_structure_repr, drug_semantic_repr = self.SEGAHGT(
+        drug_structure_repr, drug_semantic_repr = self.FEGA(
             x_dict=self.hetero_data.x_dict,
             dti_edge_index=dti_edge_index,
             dti_edge_attr=dti_edge_attr,
@@ -179,7 +179,7 @@ class FeatureNoise(nn.Module):
 
 # # ----------------------- SEA 第一阶段：多通路→(drug, ori_prot) -----------------------
 
-class SEAttention_MultiPath(nn.Module):
+class CMPTA(nn.Module):
     """
     上下文调制通路注意力 (Context Modulation Pathway Attention)
     
@@ -361,7 +361,7 @@ def grouped_softmax(scores, group_idx):
     denom = torch.zeros_like(scores_exp).index_add_(0, group_idx, scores_exp)
     return scores_exp / (denom[group_idx] + 1e-9)
 
-class SEAttention2_Temp(nn.Module):
+class DCFIA(nn.Module):
 
     def __init__(self,
                  dim_hidden,
@@ -500,7 +500,7 @@ class SEAttention2_Temp(nn.Module):
         return temp_pair_upd
 
 # ----------------------- 顶层编码器：SEA1 → SEA2 → PMA -----------------------
-class SEGAHGTEncoder(nn.Module):
+class FEGAEncoder(nn.Module):
     def __init__(self,
                  dim_drug,
                  dim_prot,
@@ -515,11 +515,11 @@ class SEGAHGTEncoder(nn.Module):
                  protein2id=None):
         super().__init__()
         # 分层 SEA
-        self.sea1 = SEAttention_MultiPath(
+        self.sea1 = CMPTA(
             dim_drug=dim_drug, dim_prot=dim_prot, dim_path=dim_pathway,
             dim_hidden=dim_hidden, dropout=dropout
         )
-        self.sea2 = SEAttention2_Temp(
+        self.sea2 =DCFIA(
             dim_hidden=dim_hidden,
             num_heads=4,
             dropout=dropout,
